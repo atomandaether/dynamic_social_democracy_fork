@@ -416,6 +416,8 @@ elements.forEach(el => {
 
 [? if not snoopy: - Other bug fixes. ?]
 
+[? if not snoopy: - Disconnected the discombobulator. ?]
+
 = Future Plans
 
 I'm currently working on another mod, *La Via Chilena al Socialismo*. Updates will resume once that's finished.
