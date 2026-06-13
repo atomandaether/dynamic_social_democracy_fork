@@ -103,3 +103,12 @@ is-special: true
 [? if dnef_existed: </div> ?]
 
 [? if dnef_existed: </div> ?]
+
+@atom
+title: Atom
+new-page: true
+is-special: true
+
+= Test
+
+Test test

@@ -309,28 +309,6 @@ blockquote+blockquote.attribution {
   font-weight: normal;
 }
 
-#atom_right_content {
-  border-top: 1px solid var(--tab-bg-color);
-  margin-top: 0.75em;
-  padding-top: 0.75em;
-  text-indent: 0;
-  line-height: 1.3em;
-}
-
-#atom_right_content p {
-  text-indent: 0;
-}
-
-#atom_right_content h1 {
-  font-size: 1.1em;
-  font-weight: normal;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  text-shadow: rgba(255, 255, 255, 0.75) 2px 2px 2px,
-    rgba(0, 0, 0, 0.1) -1px -1px 2px;
-}
-
 /* tabs */
 .tab_container {
   background-color: var(--tab-bg-color);
@@ -365,16 +343,6 @@ blockquote+blockquote.attribution {
   /* Original game-state default was hidden. Revealed here while the right sidebar is being tested. */
   display: inline-block;
 }
-
-.atom_tab {
-  display: inline-block;
-}
-
-.atom_tab input {
-  margin-left: 0.5em;
-  vertical-align: middle;
-}
-
 
 .overlay {
   background: rgba(0, 0, 0, 0.7);

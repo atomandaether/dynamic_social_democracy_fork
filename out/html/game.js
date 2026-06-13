@@ -211,14 +211,6 @@ window.disableGrayMode = function() {
     $('#qualities_right').append(dendryUI.contentToHTML.convert(displayContent));
 };
 
-  window.toggleAtomRightPanel = function(showPanel) {
-    var atomRightContent = document.getElementById('atom_right_content');
-    if (!atomRightContent) {
-      return;
-    }
-    atomRightContent.style.display = showPanel ? 'block' : 'none';
-  };
-
   window.changeTab = function(newTab, tabId, isRight) {
       if (tabId == 'poll_tab' && (dendryUI.dendryEngine.state.qualities.historical_mode || dendryUI.dendryEngine.state.qualities.rubicon)) {
           if (dendryUI.dendryEngine.state.qualities.historical_mode && !dendryUI.dendryEngine.state.qualities.rubicon) window.alert('Polls are not available in historical mode.');
