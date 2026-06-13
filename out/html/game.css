@@ -355,8 +355,12 @@ blockquote+blockquote.attribution {
 }
 
 .advisor-summary td:first-child {
-  width: 6.5em;
+  width: 5em;
   font-weight: normal;
+}
+
+.advisor-summary td:nth-child(2) {
+  text-align: left;
 }
 
 .overlay {
