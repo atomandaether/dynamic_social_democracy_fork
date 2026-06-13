@@ -212,11 +212,11 @@ window.disableGrayMode = function() {
 };
 
   window.toggleAtomRightPanel = function(showPanel) {
-    var qualitiesRight = document.getElementById('qualities_right');
-    if (!qualitiesRight) {
+    var atomRightContent = document.getElementById('atom_right_content');
+    if (!atomRightContent) {
       return;
     }
-    qualitiesRight.style.display = showPanel ? 'block' : 'none';
+    atomRightContent.style.display = showPanel ? 'block' : 'none';
   };
 
   window.changeTab = function(newTab, tabId, isRight) {
