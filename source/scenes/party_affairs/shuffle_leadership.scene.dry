@@ -32,41 +32,42 @@ if (Q.time > Q.last_time_check) {
 console.log(Q.advisor_1)
 
 // Build a compact advisor summary for the Shuffle Leadership overview.
-// These are display-only strings derived from the existing advisor flags.
+// These are display-only strings derived from the persistent gates on the add-card view-if rules.
+// Existing selection and the three-advisor cap are intentionally ignored here.
 var advisorRoster = [
-    ['hilferding_advisor', 'Hilferding'],
-    ['wels_advisor', 'Wels'],
-    ['muller_advisor', 'Müller'],
-    ['breitscheid_advisor', 'Breitscheid'],
-    ['severing_advisor', 'Severing'],
-    ['braun_advisor', 'Braun'],
-    ['juchacz_advisor', 'Juchacz'],
-    ['pfulf_advisor', 'Pfülf'],
-    ['leipart_advisor', 'Leipart'],
-    ['aufhauser_advisor', 'Aufhäuser'],
-    ['wissell_advisor', 'Wissell'],
-    ['woytinsky_advisor', 'Woytinsky'],
-    ['levi_advisor', 'Levi'],
-    ['sender_advisor', 'Sender'],
-    ['rosenfeld_advisor', 'Rosenfeld'],
-    ['seydewitz_advisor', 'Seydewitz'],
-    ['siemsen_advisor', 'Siemsen'],
-    ['mierendorff_advisor', 'Mierendorff'],
-    ['leber_advisor', 'Leber'],
-    ['schumacher_advisor', 'Schumacher'],
-    ['wirth_advisor', 'Wirth'],
-    ['baade_advisor', 'Baade'],
-    ['hirschfeld_advisor', 'Hirschfeld'],
-    ['stampfer_advisor', 'Stampfer'],
-    ['radbruch_advisor', 'Radbruch']
+    ['Hilferding', Q.centrists_resign === 0],
+    ['Wels', Q.centrists_resign === 0],
+    ['Müller', Q.muller_dead === 0 && Q.centrists_resign === 0],
+    ['Breitscheid', true],
+    ['Severing', true],
+    ['Braun', true],
+    ['Juchacz', true],
+    ['Pfülf', true],
+    ['Leipart', Q.unions_independent === 0],
+    ['Aufhäuser', true],
+    ['Wissell', Q.unions_independent === 0],
+    ['Woytinsky', Q.unions_independent === 0],
+    ['Levi', Q.levi_dead === 0 && Q.left_split === 0],
+    ['Sender', true],
+    ['Rosenfeld', Q.left_split === 0],
+    ['Seydewitz', Q.left_split === 0],
+    ['Siemsen', Q.left_split === 0],
+    ['Mierendorff', Q.neorevisionism > 0],
+    ['Leber', Q.neorevisionism > 0],
+    ['Schumacher', Q.neorevisionism > 0],
+    ['Wirth', Q.neorevisionism > 0 && Q.wirth_spd],
+    ['Baade', true],
+    ['Hirschfeld', true],
+    ['Stampfer', !Q.stampfer_killed],
+    ['Radbruch', true]
 ];
 var availableAdvisors = [];
 var unavailableAdvisors = [];
 advisorRoster.forEach(function(advisor) {
-    if (Q[advisor[0]] === 1) {
-        availableAdvisors.push(advisor[1]);
+    if (advisor[1]) {
+        availableAdvisors.push(advisor[0]);
     } else {
-        unavailableAdvisors.push(advisor[1]);
+        unavailableAdvisors.push(advisor[0]);
     }
 });
 Q.available_advisors_display = availableAdvisors.length ? availableAdvisors.join(', ') : 'none';
@@ -77,15 +78,7 @@ go-to: rm_main_menu
 
 The <span style="color: #c00000;">**SPD**</span> is a diverse and <span class="tooltip-text" title="good mod">dynamic</span> party, but its internal divisions cause factional dissent to gradually increase over time. [? if nsdap_votes >= 20: However, the threat posed by the <span style="color: #7A3C00;">**NSDAP**</span> to the Republic has quieted much of the internal bickering. ?]
 
-Appointing individual advisors will boost their respective faction’s loyalty and influence, at the cost of increasing resentment among the sidelined factions. 
-
-{!<span class="tooltip-text" title="The Left is interested in radical, transformative policies and cooperation with the KPD.">Left</span>!} strength: [+ left_strength : strength +], dissent: [+ left_dissent : dissent +]
-
-{!<span class="tooltip-text" title="The Center is a faction of Center Marxists, between reform and revolution.">Center</span>!} strength: [+ center_strength : strength +], dissent: [+ center_dissent : dissent +]
-
-{!<span class="tooltip-text" title="Labor's goal is economic reform and benefits for organized workers.">Labor</span>!} strength: [+ labor_strength : strength +], dissent: [+ labor_dissent : dissent +]
-
-{!<span class="tooltip-text" title="Reformists are pragmatic participants in government, and seek to expand the welfare state and defend democracy.">Reformist</span>!} strength: [+ reformist_strength : strength +], dissent: [+ reformist_dissent : dissent +]
+Appointing individual advisors will boost their respective faction’s loyalty and influence, at the cost of increasing resentment among the sidelined factions.
 
 Available advisors: [+ available_advisors_display +]
 
