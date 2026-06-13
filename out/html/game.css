@@ -350,13 +350,13 @@ blockquote+blockquote.attribution {
 }
 
 .advisor-summary th {
-  text-align: left;
+  text-align: center;
   padding-top: 0.35em;
 }
 
 .advisor-summary td:first-child {
-  width: 8em;
-  font-weight: bold;
+  width: 6.5em;
+  font-weight: normal;
 }
 
 .overlay {
