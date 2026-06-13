@@ -30,6 +30,47 @@ if (Q.time > Q.last_time_check) {
     }
 }
 console.log(Q.advisor_1)
+
+// Build a compact advisor summary for the Shuffle Leadership overview.
+// These are display-only strings derived from the existing advisor flags.
+var advisorRoster = [
+    ['hilferding_advisor', 'Hilferding'],
+    ['wels_advisor', 'Wels'],
+    ['muller_advisor', 'Müller'],
+    ['breitscheid_advisor', 'Breitscheid'],
+    ['severing_advisor', 'Severing'],
+    ['braun_advisor', 'Braun'],
+    ['juchacz_advisor', 'Juchacz'],
+    ['pfulf_advisor', 'Pfülf'],
+    ['leipart_advisor', 'Leipart'],
+    ['aufhauser_advisor', 'Aufhäuser'],
+    ['wissell_advisor', 'Wissell'],
+    ['woytinsky_advisor', 'Woytinsky'],
+    ['levi_advisor', 'Levi'],
+    ['sender_advisor', 'Sender'],
+    ['rosenfeld_advisor', 'Rosenfeld'],
+    ['seydewitz_advisor', 'Seydewitz'],
+    ['siemsen_advisor', 'Siemsen'],
+    ['mierendorff_advisor', 'Mierendorff'],
+    ['leber_advisor', 'Leber'],
+    ['schumacher_advisor', 'Schumacher'],
+    ['wirth_advisor', 'Wirth'],
+    ['baade_advisor', 'Baade'],
+    ['hirschfeld_advisor', 'Hirschfeld'],
+    ['stampfer_advisor', 'Stampfer'],
+    ['radbruch_advisor', 'Radbruch']
+];
+var availableAdvisors = [];
+var unavailableAdvisors = [];
+advisorRoster.forEach(function(advisor) {
+    if (Q[advisor[0]] === 1) {
+        availableAdvisors.push(advisor[1]);
+    } else {
+        unavailableAdvisors.push(advisor[1]);
+    }
+});
+Q.available_advisors_display = availableAdvisors.length ? availableAdvisors.join(', ') : 'none';
+Q.unavailable_advisors_display = unavailableAdvisors.length ? unavailableAdvisors.join(', ') : 'none';
 !}
 frequency: 1
 go-to: rm_main_menu
@@ -45,6 +86,10 @@ Appointing individual advisors will boost their respective faction’s loyalty a
 {!<span class="tooltip-text" title="Labor's goal is economic reform and benefits for organized workers.">Labor</span>!} strength: [+ labor_strength : strength +], dissent: [+ labor_dissent : dissent +]
 
 {!<span class="tooltip-text" title="Reformists are pragmatic participants in government, and seek to expand the welfare state and defend democracy.">Reformist</span>!} strength: [+ reformist_strength : strength +], dissent: [+ reformist_dissent : dissent +]
+
+Available advisors: [+ available_advisors_display +]
+
+Unavailable advisors: [+ unavailable_advisors_display +]
 
 @rm_main_menu
 
