@@ -258,8 +258,8 @@ blockquote+blockquote.attribution {
 .tools.right {
   float: right;
   right: 0.4em;
-  display: none;
-  margin-right: -6em;
+  display: block;
+  margin-right: 0;
 }
 
 #qualities {
@@ -340,6 +340,15 @@ blockquote+blockquote.attribution {
 
 #scheming_tab {
   display: none;
+}
+
+.atom_tab {
+  display: block;
+}
+
+.atom_tab input {
+  margin-left: 0.5em;
+  vertical-align: middle;
 }
 
 

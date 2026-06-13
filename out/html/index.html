@@ -340,7 +340,10 @@
                 </div>
                 <div id='stats_sidebar_right' class='tools right'>
                     <div class="tab_container">
-                        <button class="tab_button active" id="scheming_tab" onclick="window.changeTab('status_right', 'scheming_tab', true);">Scheming</button>
+                        <label class="tab_button active atom_tab" id="atom_tab">
+                            Atom
+                            <input type="checkbox" id="atom_right_toggle" checked onchange="window.toggleAtomRightPanel(this.checked);">
+                        </label>
                     </div>
                     <div id="qualities_right">
                     </div>

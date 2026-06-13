@@ -211,6 +211,14 @@ window.disableGrayMode = function() {
     $('#qualities_right').append(dendryUI.contentToHTML.convert(displayContent));
 };
 
+  window.toggleAtomRightPanel = function(showPanel) {
+    var qualitiesRight = document.getElementById('qualities_right');
+    if (!qualitiesRight) {
+      return;
+    }
+    qualitiesRight.style.display = showPanel ? 'block' : 'none';
+  };
+
   window.changeTab = function(newTab, tabId, isRight) {
       if (tabId == 'poll_tab' && (dendryUI.dendryEngine.state.qualities.historical_mode || dendryUI.dendryEngine.state.qualities.rubicon)) {
           if (dendryUI.dendryEngine.state.qualities.historical_mode && !dendryUI.dendryEngine.state.qualities.rubicon) window.alert('Polls are not available in historical mode.');
@@ -218,7 +226,8 @@ window.disableGrayMode = function() {
           return;
       }
       var tabButton = document.getElementById(tabId);
-      var tabButtons = document.getElementsByClassName('tab_button');
+      var tabGroup = document.getElementById(isRight ? 'stats_sidebar_right' : 'stats_sidebar');
+      var tabButtons = tabGroup.getElementsByClassName('tab_button');
       for (i = 0; i < tabButtons.length; i++) {
         tabButtons[i].className = tabButtons[i].className.replace(' active', '');
       }
