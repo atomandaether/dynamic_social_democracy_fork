@@ -328,7 +328,7 @@ window.disableGrayMode = function() {
 
   window.justLoaded = true;
   window.statusTab = "status";
-  window.statusTabRight = "status_right";
+  window.statusTabRight = "status_right.atom";
   window.dendryModifyUI = main;
   console.log("Modifying stats: see dendryUI.dendryEngine.state.qualities");
 
@@ -343,7 +343,7 @@ window.disableGrayMode = function() {
     window.pinnedCardsDescription = "Advisor cards - actions are only usable once per 6 months.";
     window.statusTab = "status";
     window.updateSidebar();
-    window.statusTabRight = "status_right";
+    window.statusTabRight = "status_right.atom";
     window.updateSidebarRight();
   };
 
