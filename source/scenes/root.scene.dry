@@ -1206,11 +1206,7 @@ new-page: true
 
  - Karl Kautsky, *Hitlerism and Social Democracy*, 1934
 
-This is a game of alternate history. While historical accuracy is a major concern, keep in mind that this is a *game*, and that any divergence from actual events will necessarily have to involve some element of make-believe. Nevertheless, please let the author know if there are any glaring mistakes.
-
-For more information on the politics and government of the German Republic, see the "Library" page on the top left. If this is your first time playing the game, it is strongly recommended that you read at least some of this information.
-
-**If you are playing this mod via the Mod Loader in base game, there will be various items missing (parliament colours, images, arrows, etc.). For the intended experience, please play using <a href="https://originn0.github.io/dynamic_social_democracy/" style="color: #0077FF">this</a> link.**
+This is a game of alternate history. While historical accuracy is a major concern, keep in mind that this is a *game*, and that any divergence from actual events will necessarily have to involve some element of make-believe. The Dynamic mode further diverges.
 
 - @1928_mod_mode: Begin (<span style="color: #0077FF;">dynamic</span> mode)
 - @1928_easy: Begin (<span style="color: #5B9A8D;">easy</span> difficulty)
