@@ -35,43 +35,60 @@ console.log(Q.advisor_1)
 // These are display-only strings derived from the persistent gates on the add-card view-if rules.
 // Existing selection and the three-advisor cap are intentionally ignored here.
 var advisorRoster = [
-    ['Hilferding', Q.centrists_resign === 0],
-    ['Wels', Q.centrists_resign === 0],
-    ['Müller', Q.muller_dead === 0 && Q.centrists_resign === 0],
-    ['Breitscheid', true],
-    ['Severing', true],
-    ['Braun', true],
-    ['Juchacz', true],
-    ['Pfülf', true],
-    ['Leipart', Q.unions_independent === 0],
-    ['Aufhäuser', true],
-    ['Wissell', Q.unions_independent === 0],
-    ['Woytinsky', Q.unions_independent === 0],
-    ['Levi', Q.levi_dead === 0 && Q.left_split === 0],
-    ['Sender', true],
-    ['Rosenfeld', Q.left_split === 0],
-    ['Seydewitz', Q.left_split === 0],
-    ['Siemsen', Q.left_split === 0],
-    ['Mierendorff', Q.neorevisionism > 0],
-    ['Leber', Q.neorevisionism > 0],
-    ['Schumacher', Q.neorevisionism > 0],
-    ['Wirth', Q.neorevisionism > 0 && Q.wirth_spd],
-    ['Baade', true],
-    ['Hirschfeld', true],
-    ['Stampfer', !Q.stampfer_killed],
-    ['Radbruch', true]
+    ['Center', 'Hilferding', Q.centrists_resign === 0],
+    ['Center', 'Wels', Q.centrists_resign === 0],
+    ['Center', 'Müller', Q.muller_dead === 0 && Q.centrists_resign === 0],
+    ['Center', 'Breitscheid', true],
+    ['Reformist', 'Severing', true],
+    ['Reformist', 'Braun', true],
+    ['Reformist', 'Juchacz', true],
+    ['Reformist', 'Pfülf', true],
+    ['Labor', 'Leipart', Q.unions_independent === 0],
+    ['Labor', 'Aufhäuser', true],
+    ['Labor', 'Wissell', Q.unions_independent === 0],
+    ['Labor', 'Woytinsky', Q.unions_independent === 0],
+    ['Leftist', 'Levi', Q.levi_dead === 0 && Q.left_split === 0],
+    ['Leftist', 'Sender', true],
+    ['Leftist', 'Rosenfeld', Q.left_split === 0],
+    ['Leftist', 'Seydewitz', Q.left_split === 0],
+    ['Leftist', 'Siemsen', Q.left_split === 0],
+    ['Neorevisionist', 'Mierendorff', Q.neorevisionism > 0],
+    ['Neorevisionist', 'Leber', Q.neorevisionism > 0],
+    ['Neorevisionist', 'Schumacher', Q.neorevisionism > 0],
+    ['Neorevisionist', 'Wirth', Q.neorevisionism > 0 && Q.wirth_spd],
+    ['Nonfactional', 'Baade', true],
+    ['Nonfactional', 'Hirschfeld', true],
+    ['Nonfactional', 'Stampfer', !Q.stampfer_killed],
+    ['Nonfactional', 'Radbruch', true]
 ];
-var availableAdvisors = [];
-var unavailableAdvisors = [];
+var availableAdvisors = {};
+var unavailableAdvisors = {};
+['Center', 'Reformist', 'Labor', 'Leftist', 'Neorevisionist', 'Nonfactional'].forEach(function(group) {
+    availableAdvisors[group] = [];
+    unavailableAdvisors[group] = [];
+});
 advisorRoster.forEach(function(advisor) {
-    if (advisor[1]) {
-        availableAdvisors.push(advisor[0]);
+    if (advisor[2]) {
+        availableAdvisors[advisor[0]].push(advisor[1]);
     } else {
-        unavailableAdvisors.push(advisor[0]);
+        unavailableAdvisors[advisor[0]].push(advisor[1]);
     }
 });
-Q.available_advisors_display = availableAdvisors.length ? availableAdvisors.join(', ') : 'none';
-Q.unavailable_advisors_display = unavailableAdvisors.length ? unavailableAdvisors.join(', ') : 'none';
+function advisorList(advisors) {
+    return advisors.length ? advisors.join(', ') : 'none';
+}
+Q.available_center_advisors = advisorList(availableAdvisors.Center);
+Q.available_reformist_advisors = advisorList(availableAdvisors.Reformist);
+Q.available_labor_advisors = advisorList(availableAdvisors.Labor);
+Q.available_leftist_advisors = advisorList(availableAdvisors.Leftist);
+Q.available_neorevisionist_advisors = advisorList(availableAdvisors.Neorevisionist);
+Q.available_nonfactional_advisors = advisorList(availableAdvisors.Nonfactional);
+Q.unavailable_center_advisors = advisorList(unavailableAdvisors.Center);
+Q.unavailable_reformist_advisors = advisorList(unavailableAdvisors.Reformist);
+Q.unavailable_labor_advisors = advisorList(unavailableAdvisors.Labor);
+Q.unavailable_leftist_advisors = advisorList(unavailableAdvisors.Leftist);
+Q.unavailable_neorevisionist_advisors = advisorList(unavailableAdvisors.Neorevisionist);
+Q.unavailable_nonfactional_advisors = advisorList(unavailableAdvisors.Nonfactional);
 !}
 frequency: 1
 go-to: rm_main_menu
@@ -80,9 +97,20 @@ The <span style="color: #c00000;">**SPD**</span> is a diverse and <span class="t
 
 Appointing individual advisors will boost their respective faction’s loyalty and influence, at the cost of increasing resentment among the sidelined factions.
 
-Available advisors: [+ available_advisors_display +]
-
-Unavailable advisors: [+ unavailable_advisors_display +]
+{!<table class="advisor-summary"><tr><th colspan="2">Available advisors</th></tr>!}
+{!<tr><td>Center</td><td>!}[+ available_center_advisors +]{!</td></tr>!}
+{!<tr><td>Reformist</td><td>!}[+ available_reformist_advisors +]{!</td></tr>!}
+{!<tr><td>Labor</td><td>!}[+ available_labor_advisors +]{!</td></tr>!}
+{!<tr><td>Leftist</td><td>!}[+ available_leftist_advisors +]{!</td></tr>!}
+{!<tr><td>Neorevisionist</td><td>!}[+ available_neorevisionist_advisors +]{!</td></tr>!}
+{!<tr><td>Nonfactional</td><td>!}[+ available_nonfactional_advisors +]{!</td></tr>!}
+{!<tr><th colspan="2">Unavailable advisors</th></tr>!}
+{!<tr><td>Center</td><td>!}[+ unavailable_center_advisors +]{!</td></tr>!}
+{!<tr><td>Reformist</td><td>!}[+ unavailable_reformist_advisors +]{!</td></tr>!}
+{!<tr><td>Labor</td><td>!}[+ unavailable_labor_advisors +]{!</td></tr>!}
+{!<tr><td>Leftist</td><td>!}[+ unavailable_leftist_advisors +]{!</td></tr>!}
+{!<tr><td>Neorevisionist</td><td>!}[+ unavailable_neorevisionist_advisors +]{!</td></tr>!}
+{!<tr><td>Nonfactional</td><td>!}[+ unavailable_nonfactional_advisors +]{!</td></tr></table>!}
 
 @rm_main_menu
 

@@ -340,8 +340,23 @@ blockquote+blockquote.attribution {
 }
 
 #scheming_tab {
-  /* Original game-state default was hidden. Revealed here while the right sidebar is being tested. */
-  display: inline-block;
+  display: none;
+}
+
+.advisor-summary {
+  width: 100%;
+  margin: 0.75em 0;
+  border-spacing: 0.25em;
+}
+
+.advisor-summary th {
+  text-align: left;
+  padding-top: 0.35em;
+}
+
+.advisor-summary td:first-child {
+  width: 8em;
+  font-weight: bold;
 }
 
 .overlay {
