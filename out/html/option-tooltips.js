@@ -88,18 +88,9 @@
       ? data.effects.map(escapeHTML).join('<br>')
       : escapeHTML(data.onArrival || '');
 
-    var route = [];
-    if (data.goTo) route.push('go-to: ' + escapeHTML(data.goTo));
-    if (data.maxVisits) route.push('max-visits: ' + escapeHTML(data.maxVisits));
-
-    var raw = '@' + escapeHTML(data.branch || '') +
-      (data.onArrival ? '<br>on-arrival: ' + escapeHTML(data.onArrival) : '');
-
     return '<div class="option-tooltip-title">' + escapeHTML(data.title || data.branch || 'Option') + '</div>' +
       section('Requirements', requirements.join('<br>')) +
-      section('Effects', effects) +
-      section('Route/follow-up', route.join('<br>')) +
-      section('Raw source', raw);
+      section('Effects', effects);
   }
 
   function ensureTooltip() {
@@ -112,14 +103,17 @@
     return tooltipEl;
   }
 
-  function positionTooltip(target) {
+  function positionTooltip(event) {
     var tooltip = ensureTooltip();
-    var rect = target.getBoundingClientRect();
-    var top = window.scrollY + rect.bottom + 8;
-    var left = window.scrollX + rect.left;
+    var clientX = event.clientX || 0;
+    var clientY = event.clientY || 0;
+    var top = window.scrollY + clientY + 12;
+    var left = window.scrollX + clientX + 12;
     var maxLeft = window.scrollX + document.documentElement.clientWidth - tooltip.offsetWidth - 12;
+    var maxTop = window.scrollY + document.documentElement.clientHeight - tooltip.offsetHeight - 12;
     tooltip.style.top = top + 'px';
     tooltip.style.left = Math.max(12, Math.min(left, maxLeft)) + 'px';
+    tooltip.style.top = Math.max(12, Math.min(top, maxTop)) + 'px';
   }
 
   function showTooltip(event) {
@@ -131,12 +125,18 @@
     var tooltip = ensureTooltip();
     tooltip.innerHTML = buildTooltipHTML(data);
     tooltip.style.display = 'block';
-    positionTooltip(target);
+    positionTooltip(event);
   }
 
   function hideTooltip() {
     if (tooltipEl) {
       tooltipEl.style.display = 'none';
+    }
+  }
+
+  function moveTooltip(event) {
+    if (tooltipEl && tooltipEl.style.display === 'block') {
+      positionTooltip(event);
     }
   }
 
@@ -152,6 +152,7 @@
       }
       choice.dataset.effectsTooltipAttached = '1';
       choice.addEventListener('mouseenter', showTooltip);
+      choice.addEventListener('mousemove', moveTooltip);
       choice.addEventListener('mouseleave', hideTooltip);
       link.addEventListener('focus', showTooltip);
       link.addEventListener('blur', hideTooltip);
