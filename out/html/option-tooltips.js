@@ -46,7 +46,7 @@
   }
 
   function hasTooltipContent(data) {
-    return !!(data && (data.onArrival || data.goTo || data.maxVisits));
+    return !!(data && data.onArrival);
   }
 
   function lookupTooltip(target) {

@@ -99,6 +99,7 @@ function parseFile(file) {
         chooseIf: '',
         onArrival: '',
         goTo: '',
+        isCard: false,
         maxVisits: '',
         raw: [],
       };
@@ -130,7 +131,19 @@ function parseFile(file) {
     if (field === 'choose-if') branches[currentBranch].chooseIf = value;
     if (field === 'on-arrival') branches[currentBranch].onArrival = value;
     if (field === 'go-to') branches[currentBranch].goTo = value;
+    if (field === 'is-card') branches[currentBranch].isCard = value === 'true';
     if (field === 'max-visits') branches[currentBranch].maxVisits = value;
+  }
+
+  for (const branch of Object.values(branches)) {
+    if (branch.isCard && branch.title) {
+      options.push({
+        branch: branch.id,
+        title: branch.title,
+        titleKey: normalizeTitle(branch.title),
+        rawOption: `@${branch.id}`,
+      });
+    }
   }
 
   return { sceneIds, options, branches };
@@ -160,6 +173,7 @@ for (const file of walk(scenesRoot).filter((item) => item.endsWith('.scene.dry')
       onArrival: branch.onArrival || '',
       effects,
       goTo: branch.goTo || '',
+      isCard: !!branch.isCard,
       maxVisits: branch.maxVisits || '',
       raw: (branch.raw || []).slice(0, 12).join('\n'),
     };
