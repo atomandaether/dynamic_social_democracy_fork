@@ -45,17 +45,30 @@
     return sceneData && sceneData.options && sceneData.options[candidate.titleKey];
   }
 
-  function lookupTooltip(link) {
+  function hasTooltipContent(data) {
+    return !!(data && (data.onArrival || data.goTo || data.maxVisits));
+  }
+
+  function lookupTooltip(target) {
     if (!tooltipData) {
+      return null;
+    }
+    var link = target.matches && target.matches('a[data-choice]')
+      ? target
+      : target.querySelector && target.querySelector('a[data-choice]');
+    if (!link) {
       return null;
     }
     var key = normalizeTitle(link.textContent);
     var sceneData = sceneDataFor(currentSceneId());
+    var data = null;
     if (sceneData && sceneData.options && sceneData.options[key]) {
-      return sceneData.options[key];
+      data = sceneData.options[key];
+      return hasTooltipContent(data) ? data : null;
     }
     var candidates = tooltipData.byTitle && tooltipData.byTitle[key];
-    return candidates && candidates.length ? dereference(candidates[0]) : null;
+    data = candidates && candidates.length ? dereference(candidates[0]) : null;
+    return hasTooltipContent(data) ? data : null;
   }
 
   function section(title, body) {
@@ -73,7 +86,7 @@
 
     var effects = data.effects && data.effects.length
       ? data.effects.map(escapeHTML).join('<br>')
-      : escapeHTML(data.onArrival || 'No on-arrival effects found.');
+      : escapeHTML(data.onArrival || '');
 
     var route = [];
     if (data.goTo) route.push('go-to: ' + escapeHTML(data.goTo));
@@ -131,15 +144,16 @@
     if (!tooltipData) {
       return;
     }
-    var links = document.querySelectorAll('ul.choices li a[data-choice]');
-    links.forEach(function(link) {
-      if (link.dataset.effectsTooltipAttached) {
+    var choices = document.querySelectorAll('ul.choices li');
+    choices.forEach(function(choice) {
+      var link = choice.querySelector('a[data-choice]');
+      if (!link || choice.dataset.effectsTooltipAttached) {
         return;
       }
-      link.dataset.effectsTooltipAttached = '1';
-      link.addEventListener('mouseenter', showTooltip);
+      choice.dataset.effectsTooltipAttached = '1';
+      choice.addEventListener('mouseenter', showTooltip);
+      choice.addEventListener('mouseleave', hideTooltip);
       link.addEventListener('focus', showTooltip);
-      link.addEventListener('mouseleave', hideTooltip);
       link.addEventListener('blur', hideTooltip);
     });
   };
