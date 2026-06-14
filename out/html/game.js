@@ -211,6 +211,12 @@ window.disableGrayMode = function() {
     $('#qualities_right').append(dendryUI.contentToHTML.convert(displayContent));
 };
 
+  window.toggleOpenNumbers = function(checked) {
+    dendryUI.dendryEngine.state.qualities.open_numbers = checked ? 1 : 0;
+    window.updateSidebar();
+    window.updateSidebarRight();
+  };
+
   window.changeTab = function(newTab, tabId, isRight) {
       if (tabId == 'poll_tab' && (dendryUI.dendryEngine.state.qualities.historical_mode || dendryUI.dendryEngine.state.qualities.rubicon)) {
           if (dendryUI.dendryEngine.state.qualities.historical_mode && !dendryUI.dendryEngine.state.qualities.rubicon) window.alert('Polls are not available in historical mode.');

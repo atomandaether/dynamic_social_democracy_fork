@@ -112,3 +112,5 @@ is-special: true
 = Test
 
 Test test
+
+{!<p><label><input type="checkbox" id="open_numbers_toggle" onclick="window.toggleOpenNumbers(this.checked);" !}[? if open_numbers: checked?]{!> Open Numbers</label></p>!}
