@@ -236,6 +236,9 @@ window.disableGrayMode = function() {
   window.onDisplayContent = function() {
       window.updateSidebar();
       window.updateSidebarRight();
+      if (window.refreshOptionTooltips) {
+          window.setTimeout(window.refreshOptionTooltips, 0);
+      }
   };
 
   window.toggleDem = function toggleDemographicTable() {
