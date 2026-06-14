@@ -19,6 +19,44 @@
       .replace(/'/g, '&#039;');
   }
 
+  function isHousekeepingVariable(variable) {
+    return variable === 'n_advisors' || /_advisor$/.test(variable);
+  }
+
+  function conditionVariable(condition) {
+    var match = String(condition || '').trim().match(/^!?\s*([A-Za-z_][\w]*)\s*(?:[=!<>]|$)/);
+    return match ? match[1] : '';
+  }
+
+  function filterConditionText(value) {
+    return String(value || '')
+      .split(/\s+and\s+/i)
+      .map(function(condition) { return condition.trim(); })
+      .filter(function(condition) {
+        return condition && !isHousekeepingVariable(conditionVariable(condition));
+      })
+      .join(' and ');
+  }
+
+  function effectVariable(effect) {
+    var value = String(effect || '').trim();
+    var assignment = value.match(/^([A-Za-z_][\w]*)\s*[+\-*/]?=/);
+    if (assignment) {
+      return assignment[1];
+    }
+    var delta = value.match(/\s([A-Za-z_][\w]*)$/);
+    return delta ? delta[1] : '';
+  }
+
+  function displayEffects(data) {
+    var effects = data.effects && data.effects.length
+      ? data.effects
+      : String(data.onArrival || '').split(';').map(function(effect) { return effect.trim(); });
+    return effects.filter(function(effect) {
+      return effect && !isHousekeepingVariable(effectVariable(effect));
+    });
+  }
+
   function currentSceneId() {
     if (!window.dendryUI || !window.dendryUI.dendryEngine) {
       return '';
@@ -46,7 +84,7 @@
   }
 
   function hasTooltipContent(data) {
-    return !!(data && data.onArrival);
+    return !!(data && displayEffects(data).length);
   }
 
   function lookupTooltip(target) {
@@ -80,13 +118,13 @@
 
   function buildTooltipHTML(data) {
     var requirements = [];
-    if (data.viewIf) requirements.push('view-if: ' + escapeHTML(data.viewIf));
-    if (data.chooseIf) requirements.push('choose-if: ' + escapeHTML(data.chooseIf));
+    var viewIf = filterConditionText(data.viewIf);
+    var chooseIf = filterConditionText(data.chooseIf);
+    if (viewIf) requirements.push('view-if: ' + escapeHTML(viewIf));
+    if (chooseIf) requirements.push('choose-if: ' + escapeHTML(chooseIf));
     if (data.unavailableSubtitle) requirements.push('unavailable: ' + escapeHTML(data.unavailableSubtitle));
 
-    var effects = data.effects && data.effects.length
-      ? data.effects.map(escapeHTML).join('<br>')
-      : escapeHTML(data.onArrival || '');
+    var effects = displayEffects(data).map(escapeHTML).join('<br>');
 
     return '<div class="option-tooltip-title">' + escapeHTML(data.title || data.branch || 'Option') + '</div>' +
       section('Requirements', requirements.join('<br>')) +
