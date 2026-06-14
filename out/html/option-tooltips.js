@@ -57,6 +57,67 @@
     });
   }
 
+  function currentQualities() {
+    if (!window.dendryUI || !window.dendryUI.dendryEngine || !window.dendryUI.dendryEngine.state) {
+      return {};
+    }
+    return window.dendryUI.dendryEngine.state.qualities || {};
+  }
+
+  function formatNumber(value) {
+    if (!Number.isFinite(value)) {
+      return null;
+    }
+    var rounded = Math.round(value * 1000) / 1000;
+    return String(rounded).replace(/\.0+$/, '').replace(/(\.\d*?)0+$/, '$1');
+  }
+
+  function evaluateArithmetic(expression) {
+    var qualities = currentQualities();
+    var substituted = String(expression || '').replace(/\b[A-Za-z_][\w]*\b/g, function(name) {
+      var value = qualities[name];
+      if (typeof value === 'boolean') {
+        return value ? '1' : '0';
+      }
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        return String(value);
+      }
+      return 'NaN';
+    });
+    if (!/^[\d+\-*/().\sNaN]+$/.test(substituted)) {
+      return null;
+    }
+    try {
+      var result = Function('"use strict"; return (' + substituted + ');')();
+      return Number.isFinite(result) ? result : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function displayEffect(effect) {
+    var match = String(effect || '').trim().match(/^([+-])(.+)\s+([A-Za-z_][\w]*)$/);
+    if (!match) {
+      return effect;
+    }
+    var sign = match[1];
+    var expression = match[2].trim();
+    var variable = match[3];
+    if (!/[A-Za-z_]/.test(expression)) {
+      return effect;
+    }
+    var value = evaluateArithmetic(expression);
+    var formatted = formatNumber(value);
+    if (formatted === null) {
+      return effect;
+    }
+    if (sign === '-') {
+      value = -value;
+      formatted = formatNumber(value);
+    }
+    return (value >= 0 ? '+' : '') + formatted + ' ' + variable;
+  }
+
   function fuzzyTokens(value) {
     var ignored = {
       a: true,
@@ -178,7 +239,7 @@
     if (chooseIf) requirements.push('choose-if: ' + escapeHTML(chooseIf));
     if (data.unavailableSubtitle) requirements.push('unavailable: ' + escapeHTML(data.unavailableSubtitle));
 
-    var effects = displayEffects(data).map(escapeHTML).join('<br>');
+    var effects = displayEffects(data).map(displayEffect).map(escapeHTML).join('<br>');
 
     return '<div class="option-tooltip-title">' + escapeHTML(data.title || data.branch || 'Option') + '</div>' +
       section('Requirements', requirements.join('<br>')) +
