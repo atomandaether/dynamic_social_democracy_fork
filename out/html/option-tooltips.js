@@ -20,7 +20,7 @@
   }
 
   function isHousekeepingVariable(variable) {
-    return variable === 'n_advisors' || /_advisor$/.test(variable);
+    return variable === 'enemies' || variable === 'n_advisors' || /_advisor$/.test(variable);
   }
 
   function conditionVariable(condition) {
@@ -55,6 +55,56 @@
     return effects.filter(function(effect) {
       return effect && !isHousekeepingVariable(effectVariable(effect));
     });
+  }
+
+  function fuzzyTokens(value) {
+    var ignored = {
+      a: true,
+      an: true,
+      and: true,
+      as: true,
+      if: true,
+      of: true,
+      on: true,
+      or: true,
+      our: true,
+      the: true,
+      to: true,
+    };
+    return normalizeTitle(value)
+      .replace(/[^a-z0-9_ -]/g, ' ')
+      .split(/[\s-]+/)
+      .filter(function(token) {
+        return token.length > 1 && !ignored[token];
+      });
+  }
+
+  function fuzzySceneMatch(sceneData, key) {
+    if (!sceneData || !sceneData.optionList) {
+      return null;
+    }
+    var targetTokens = fuzzyTokens(key);
+    var targetSet = {};
+    targetTokens.forEach(function(token) { targetSet[token] = true; });
+
+    var best = null;
+    var bestScore = 0;
+    sceneData.optionList.forEach(function(option) {
+      if (!hasTooltipContent(option)) {
+        return;
+      }
+      var optionTokens = fuzzyTokens(option.titleKey);
+      if (!optionTokens.length) {
+        return;
+      }
+      var matches = optionTokens.filter(function(token) { return targetSet[token]; }).length;
+      var score = matches / optionTokens.length;
+      if (matches >= 2 && score > bestScore) {
+        best = option;
+        bestScore = score;
+      }
+    });
+    return bestScore >= 0.55 ? best : null;
   }
 
   function currentSceneId() {
@@ -103,6 +153,10 @@
     if (sceneData && sceneData.options && sceneData.options[key]) {
       data = sceneData.options[key];
       return hasTooltipContent(data) ? data : null;
+    }
+    data = fuzzySceneMatch(sceneData, key);
+    if (data) {
+      return data;
     }
     var candidates = tooltipData.byTitle && tooltipData.byTitle[key];
     data = candidates && candidates.length ? dereference(candidates[0]) : null;
