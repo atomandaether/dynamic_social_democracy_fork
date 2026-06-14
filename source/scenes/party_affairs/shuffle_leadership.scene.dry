@@ -97,20 +97,13 @@ The <span style="color: #c00000;">**SPD**</span> is a diverse and <span class="t
 
 Appointing individual advisors will boost their respective faction’s loyalty and influence, at the cost of increasing resentment among the sidelined factions.
 
-{!<table class="advisor-summary"><tr><th colspan="2">Available advisors</th></tr>!}
-{!<tr><td>Center</td><td>!}[+ available_center_advisors +]{!</td></tr>!}
-{!<tr><td>Reformist</td><td>!}[+ available_reformist_advisors +]{!</td></tr>!}
-{!<tr><td>Labor</td><td>!}[+ available_labor_advisors +]{!</td></tr>!}
-{!<tr><td>Leftist</td><td>!}[+ available_leftist_advisors +]{!</td></tr>!}
-{!<tr><td>Neorevisionist</td><td>!}[+ available_neorevisionist_advisors +]{!</td></tr>!}
-{!<tr><td>Nonfactional</td><td>!}[+ available_nonfactional_advisors +]{!</td></tr>!}
-{!<tr><th colspan="2">Unavailable advisors</th></tr>!}
-{!<tr><td>Center</td><td>!}[+ unavailable_center_advisors +]{!</td></tr>!}
-{!<tr><td>Reformist</td><td>!}[+ unavailable_reformist_advisors +]{!</td></tr>!}
-{!<tr><td>Labor</td><td>!}[+ unavailable_labor_advisors +]{!</td></tr>!}
-{!<tr><td>Leftist</td><td>!}[+ unavailable_leftist_advisors +]{!</td></tr>!}
-{!<tr><td>Neorevisionist</td><td>!}[+ unavailable_neorevisionist_advisors +]{!</td></tr>!}
-{!<tr><td>Nonfactional</td><td>!}[+ unavailable_nonfactional_advisors +]{!</td></tr></table>!}
+{!<div class="advisor-list-heading">Advisor List</div>!}
+{!<div class="advisor-list-row">!}[? if available_center_advisors == "none": <span class="unavailable-advisor">Center</span>?][? if available_center_advisors != "none": Center?] — [? if available_center_advisors != "none": [+ available_center_advisors +]?][? if available_center_advisors != "none" and unavailable_center_advisors != "none": , ?][? if unavailable_center_advisors != "none": <span class="unavailable-advisor">[+ unavailable_center_advisors +]</span>?]{!</div>!}
+{!<div class="advisor-list-row">!}[? if available_reformist_advisors == "none": <span class="unavailable-advisor">Reformist</span>?][? if available_reformist_advisors != "none": Reformist?] — [? if available_reformist_advisors != "none": [+ available_reformist_advisors +]?][? if available_reformist_advisors != "none" and unavailable_reformist_advisors != "none": , ?][? if unavailable_reformist_advisors != "none": <span class="unavailable-advisor">[+ unavailable_reformist_advisors +]</span>?]{!</div>!}
+{!<div class="advisor-list-row">!}[? if available_labor_advisors == "none": <span class="unavailable-advisor">Labor</span>?][? if available_labor_advisors != "none": Labor?] — [? if available_labor_advisors != "none": [+ available_labor_advisors +]?][? if available_labor_advisors != "none" and unavailable_labor_advisors != "none": , ?][? if unavailable_labor_advisors != "none": <span class="unavailable-advisor">[+ unavailable_labor_advisors +]</span>?]{!</div>!}
+{!<div class="advisor-list-row">!}[? if available_leftist_advisors == "none": <span class="unavailable-advisor">Leftist</span>?][? if available_leftist_advisors != "none": Leftist?] — [? if available_leftist_advisors != "none": [+ available_leftist_advisors +]?][? if available_leftist_advisors != "none" and unavailable_leftist_advisors != "none": , ?][? if unavailable_leftist_advisors != "none": <span class="unavailable-advisor">[+ unavailable_leftist_advisors +]</span>?]{!</div>!}
+{!<div class="advisor-list-row">!}[? if available_neorevisionist_advisors == "none": <span class="unavailable-advisor">Neorevisionist</span>?][? if available_neorevisionist_advisors != "none": Neorevisionist?] — [? if available_neorevisionist_advisors != "none": [+ available_neorevisionist_advisors +]?][? if available_neorevisionist_advisors != "none" and unavailable_neorevisionist_advisors != "none": , ?][? if unavailable_neorevisionist_advisors != "none": <span class="unavailable-advisor">[+ unavailable_neorevisionist_advisors +]</span>?]{!</div>!}
+{!<div class="advisor-list-row">!}[? if available_nonfactional_advisors == "none": <span class="unavailable-advisor">Nonfactional</span>?][? if available_nonfactional_advisors != "none": Nonfactional?] — [? if available_nonfactional_advisors != "none": [+ available_nonfactional_advisors +]?][? if available_nonfactional_advisors != "none" and unavailable_nonfactional_advisors != "none": , ?][? if unavailable_nonfactional_advisors != "none": <span class="unavailable-advisor">[+ unavailable_nonfactional_advisors +]</span>?]{!</div>!}
 
 @rm_main_menu
 

@@ -343,24 +343,19 @@ blockquote+blockquote.attribution {
   display: none;
 }
 
-.advisor-summary {
-  width: 100%;
-  margin: 0.75em 0;
-  border-spacing: 0.25em;
-}
-
-.advisor-summary th {
+.advisor-list-heading {
+  margin: 0.75em 0 0.25em;
   text-align: center;
-  padding-top: 0.35em;
+  font-weight: bold;
 }
 
-.advisor-summary td:first-child {
-  width: 5em;
-  font-weight: normal;
+.advisor-list-row {
+  margin: 0.1em 0;
+  text-indent: 0;
 }
 
-.advisor-summary td:nth-child(2) {
-  text-align: left;
+.unavailable-advisor {
+  color: #777;
 }
 
 .overlay {
