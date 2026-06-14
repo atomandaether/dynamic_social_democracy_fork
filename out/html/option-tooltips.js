@@ -53,7 +53,8 @@
       ? data.effects
       : String(data.onArrival || '').split(';').map(function(effect) { return effect.trim(); });
     return effects.filter(function(effect) {
-      return effect && !isHousekeepingVariable(effectVariable(effect));
+      var variable = effectVariable(effect);
+      return effect && variable && !isHousekeepingVariable(variable);
     });
   }
 
@@ -68,7 +69,7 @@
     if (!Number.isFinite(value)) {
       return null;
     }
-    var rounded = Math.round(value * 1000) / 1000;
+    var rounded = Math.round(value * 10) / 10;
     return String(rounded).replace(/\.0+$/, '').replace(/(\.\d*?)0+$/, '$1');
   }
 

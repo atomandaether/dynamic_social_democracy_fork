@@ -64,6 +64,13 @@ function summarizeEffect(statement) {
   return `${variable} ${op} ${value}`;
 }
 
+function optionTitle(option, branch) {
+  if (option.title && option.title !== option.branch) {
+    return option.title;
+  }
+  return branch.title || option.title || option.branch;
+}
+
 function parseFile(file) {
   const text = fs.readFileSync(file, 'utf8');
   const lines = text.split(/\r?\n/);
@@ -98,6 +105,7 @@ function parseFile(file) {
         viewIf: '',
         chooseIf: '',
         onArrival: '',
+        onDeparture: '',
         goTo: '',
         isCard: false,
         maxVisits: '',
@@ -130,6 +138,7 @@ function parseFile(file) {
     if (field === 'view-if') branches[currentBranch].viewIf = value;
     if (field === 'choose-if') branches[currentBranch].chooseIf = value;
     if (field === 'on-arrival') branches[currentBranch].onArrival = value;
+    if (field === 'on-departure') branches[currentBranch].onDeparture = value;
     if (field === 'go-to') branches[currentBranch].goTo = value;
     if (field === 'is-card') branches[currentBranch].isCard = value === 'true';
     if (field === 'max-visits') branches[currentBranch].maxVisits = value;
@@ -159,28 +168,31 @@ for (const file of walk(scenesRoot).filter((item) => item.endsWith('.scene.dry')
 
   for (const option of parsed.options) {
     const branch = parsed.branches[option.branch] || {};
-    const effects = branch.onArrival
-      ? branch.onArrival.split(';').map(summarizeEffect).filter(Boolean)
+    const title = optionTitle(option, branch);
+    const effectSource = [branch.onArrival, branch.onDeparture].filter(Boolean).join('; ');
+    const effects = effectSource
+      ? effectSource.split(';').map(summarizeEffect).filter(Boolean)
       : [];
     const tooltip = {
       branch: option.branch,
-      title: option.title,
-      titleKey: option.titleKey,
+      title,
+      titleKey: normalizeTitle(title),
       viewIf: branch.viewIf || '',
       chooseIf: branch.chooseIf || '',
       subtitle: branch.subtitle || '',
       unavailableSubtitle: branch.unavailableSubtitle || '',
       onArrival: branch.onArrival || '',
+      onDeparture: branch.onDeparture || '',
       effects,
       goTo: branch.goTo || '',
       isCard: !!branch.isCard,
       maxVisits: branch.maxVisits || '',
       raw: (branch.raw || []).slice(0, 12).join('\n'),
     };
-    sceneEntry.options[option.titleKey] = tooltip;
+    sceneEntry.options[tooltip.titleKey] = tooltip;
     sceneEntry.optionList.push(tooltip);
-    if (!byTitle[option.titleKey]) byTitle[option.titleKey] = [];
-    byTitle[option.titleKey].push({ sceneId: primarySceneId, titleKey: option.titleKey });
+    if (!byTitle[tooltip.titleKey]) byTitle[tooltip.titleKey] = [];
+    byTitle[tooltip.titleKey].push({ sceneId: primarySceneId, titleKey: tooltip.titleKey });
   }
 
   byScene[primarySceneId] = sceneEntry;
